@@ -2,12 +2,12 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
   MyLambdaFunction:
-    Type: 'AWS::Serverless::Function'
+    Type: AWS::Serverless::Function
     Properties:
-      Runtime:  nodejs16.x
+      Runtime: nodejs16.x
       Handler: index.handler
-      CodeUri: ./js-api
-      Events:        
+      CodeUri: s3://lambda-artifacts-sam/f1d3483cdf6b3275067319831b938837
+      Events:
         MyApiResource:
           Type: Api
           Properties:
