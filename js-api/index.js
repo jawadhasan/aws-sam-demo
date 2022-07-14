@@ -3,7 +3,7 @@ exports.handler = async (event) => {
     
     var token = makeid(5)
     console.log(token);
-
+    console.log("...");
 
 	const response = {
         statusCode: 200,

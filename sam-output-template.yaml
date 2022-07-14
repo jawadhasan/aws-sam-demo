@@ -1,15 +1,40 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+Description: Sample SAM Template for demo node-app
 Resources:
+  MyTable:
+    Type: AWS::Serverless::SimpleTable
   MyLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs16.x
       Handler: index.handler
-      CodeUri: s3://lambda-artifacts-sam/f1d3483cdf6b3275067319831b938837
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: MyTable
+      Policies: AmazonDynamoDBFullAccess
+      CodeUri: s3://lambda-artifacts-sam/db76b613612ce0001920ccce341fd686
       Events:
         MyApiResource:
           Type: Api
           Properties:
             Path: /my-resource
             Method: get
+Outputs:
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/my-resource/
+  MyLambdaFunction:
+    Description: MyLambdaFunction ARN
+    Value:
+      Fn::GetAtt:
+      - MyLambdaFunction
+      - Arn
+  MyLambdaFunctionIamRole:
+    Description: Implicit IAM Role created for MyLambdaFunction
+    Value:
+      Fn::GetAtt:
+      - MyLambdaFunction
+      - Arn
